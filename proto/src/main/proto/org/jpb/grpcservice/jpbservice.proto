@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "org.jpb.grpcservice.proto";
+option java_outer_classname = "CalcProto";
+
+package grpcservice;
+
+service Calc {
+  rpc f1 (ANumber) returns (ANumber) {}
+  rpc f2 (ANumber) returns (ANumber) {}
+  rpc f3 (ANumber) returns (ANumber) {}
+}
+
+
+// The request message containing the user's name.
+message ANumber {
+  uint64 number = 1;
+  uint32 functionsApplied = 2;
+}
+
