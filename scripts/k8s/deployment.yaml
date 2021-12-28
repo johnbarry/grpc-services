@@ -6,7 +6,7 @@ metadata:
     app: grpc-demo
   name: grpc-demo
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: grpc-demo
@@ -33,13 +33,13 @@ metadata:
   name: grpc-demo-rest
 spec:
   ports:
-  - name: 8080-8080
+  - name: http
     port: 8080
     protocol: TCP
     targetPort: 8080
   selector:
     app: grpc-demo
-  type: LoadBalancer
+  type: ClusterIP
 ---
 apiVersion: v1
 kind: Service
@@ -50,10 +50,10 @@ metadata:
   name: grpc-demo-grpc
 spec:
   ports:
-  - name: 50051-50051
+  - name: grpc
     port: 50051
     protocol: TCP
     targetPort: 50051
   selector:
     app: grpc-demo
-  type: LoadBalancer
+  type: ClusterIP
