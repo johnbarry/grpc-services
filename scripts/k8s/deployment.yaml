@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: grpc-demo
+  name: grpc-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grpc-demo
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: grpc-demo
+    spec:
+      containers:
+      - image: jpb/testserver
+        imagePullPolicy: Never
+        name: grpc-demo
+        resources: {}
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: grpc-demo
+  name: grpc-demo-rest
+spec:
+  ports:
+  - name: 8080-8080
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: grpc-demo
+  type: LoadBalancer
+---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: grpc-demo
+  name: grpc-demo-grpc
+spec:
+  ports:
+  - name: 50051-50051
+    port: 50051
+    protocol: TCP
+    targetPort: 50051
+  selector:
+    app: grpc-demo
+  type: LoadBalancer
