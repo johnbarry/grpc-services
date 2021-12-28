@@ -4,6 +4,7 @@ metadata:
   creationTimestamp: null
   labels:
     app: grpc-demo
+    version: "1.0"
   name: grpc-demo
 spec:
   replicas: 3
@@ -16,6 +17,7 @@ spec:
       creationTimestamp: null
       labels:
         app: grpc-demo
+        version: "1.0"
     spec:
       containers:
       - image: jpb/testserver
@@ -30,6 +32,7 @@ metadata:
   creationTimestamp: null
   labels:
     app: grpc-demo
+    version: "1.0"
   name: grpc-demo-rest
 spec:
   ports:
@@ -47,6 +50,7 @@ metadata:
   creationTimestamp: null
   labels:
     app: grpc-demo
+    version: "1.0"
   name: grpc-demo-grpc
 spec:
   ports:
