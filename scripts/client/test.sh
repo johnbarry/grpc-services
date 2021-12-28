@@ -7,9 +7,15 @@ echo "proto..."
 cat $PROTOFILE
 echo "-----------------"
 echo "f1..."
-"${GITDIR}"/grpc/cmake/build/grpc_cli call "${GRPC_HOST}":50051 f1 "number: 20" --protofiles=$PROTOFILE
+for i in {1..1000}
+do
+"${GITDIR}"/grpc/cmake/build/grpc_cli call "${GRPC_HOST}":50051 f1 "number: $i" --protofiles=$PROTOFILE
+done
 echo "-----------------"
 echo "f2..."
-"${GITDIR}"/grpc/cmake/build/grpc_cli call "${GRPC_HOST}":50051 f2 "number: 50" --protofiles=$PROTOFILE
+for i in {1..1000}
+do
+"${GITDIR}"/grpc/cmake/build/grpc_cli call "${GRPC_HOST}":50051 f2 "number: $i" --protofiles=$PROTOFILE
+done
 cd "${GITDIR}"/grpc-services/scripts/client || exit
 
