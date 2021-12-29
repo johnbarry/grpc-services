@@ -1,4 +1,4 @@
-include ("proto", "server")
+include ("proto", "server", "numberms")
 
 pluginManagement {
     val kotlinVersion: String by settings

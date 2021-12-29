@@ -42,19 +42,12 @@ class CalcServer : ApplicationRunner {
 		Runtime.getRuntime().addShutdownHook(
 			Thread {
 				log.info("*** shutting down gRPC server since JVM is shutting down")
-				stop()
+				server.shutdown()
 				log.info("*** server shut down")
 			}
 		)
 	}
 
-	private fun stop() {
-		server.shutdown()
-	}
-
-	private fun blockUntilShutdown() {
-		server.awaitTermination()
-	}
 	companion object {
 		val log: Logger = LoggerFactory.getLogger(CalcServer::class.java)
 	}
@@ -63,7 +56,6 @@ class CalcServer : ApplicationRunner {
 		log.info("Starting grpc Server")
 		val server = CalcServer()
 		server.start()
-		//server.blockUntilShutdown()
 	}
 }
 

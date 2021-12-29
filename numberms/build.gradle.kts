@@ -21,17 +21,17 @@ dependencies {
 }
 
 tasks.bootBuildImage {
-	imageName = "jpb/testserver"
+	imageName = "jpb/numberms"
 }
 
 dependencies {
-
 	implementation ("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	implementation("junit:junit:4.13.1")
+	implementation( "io.projectreactor.kafka:reactor-kafka:1.3.7")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
 	testImplementation("org.junit.jupiter:junit-jupiter-engine:5.8.1")
@@ -45,6 +45,7 @@ dependencies {
 	api("io.grpc:grpc-kotlin-stub:${rootProject.ext["grpcKotlinVersion"]}")
 	api("org.jetbrains.kotlinx:kotlinx-coroutines-core:${rootProject.ext["kotlinVersion"]}")
 	api("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:${rootProject.ext["kotlinVersion"]}")
+
 }
 
 java {
