@@ -1,4 +1,5 @@
 syntax = "proto3";
+import "google/protobuf/timestamp.proto";
 
 option java_multiple_files = true;
 option java_package = "org.jpb.grpcservice.proto";
@@ -12,10 +13,19 @@ service Calc {
   rpc f3 (ANumber) returns (ANumber) {}
 }
 
+message CallInstance {
+  string service = 1;
+  string procedure = 2;
+  google.protobuf.Timestamp timestamp = 3;
+}
 
-// The request message containing the user's name.
+message Lineage {
+  string correlationId = 1;
+  repeated CallInstance lineage = 2;
+}
+
 message ANumber {
   uint64 number = 1;
-  uint32 functionsApplied = 2;
+  Lineage lineage = 2;
 }
 

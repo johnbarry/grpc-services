@@ -1,28 +1,49 @@
 package org.jpb.grpcservice
 
+
+import com.google.protobuf.timestamp
+import io.grpc.MethodDescriptor
 import io.grpc.Server
 import io.grpc.ServerBuilder
-import org.jpb.grpcservice.proto.ANumber
-import org.jpb.grpcservice.proto.CalcGrpcKt
-import org.jpb.grpcservice.proto.aNumber
+import org.jpb.grpcservice.proto.*
+
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.boot.*
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.stereotype.Component
+import java.time.Instant
+
+fun ANumber.withUpdatedLineage(method: MethodDescriptor<ANumber, ANumber>): Lineage =
+	Lineage.newBuilder()
+		.setCorrelationId (this@withUpdatedLineage.lineage.correlationId)
+		.addAllLineage(this@withUpdatedLineage.lineage.lineageList)
+		.addLineage (callInstance {
+			service = method.serviceName ?: ""
+			procedure = method.bareMethodName ?: ""
+			timestamp = timestamp { seconds = Instant.now().epochSecond }
+		})
+		.build()
 
 open class CalcService : CalcGrpcKt.CalcCoroutineImplBase() {
-	// f1(x) = x * 2
+
+	// f1(x) = x + 1
 	override suspend fun f1(request: ANumber): ANumber = aNumber {
-		functionsApplied = request.functionsApplied+1
-		number = request.number * 2
+		lineage = request.withUpdatedLineage(CalcGrpcKt.f1Method)
+		number = request.number + 1
 	}
 
-	// f2(x) = x + 100
+	// f2(x) = x + 1000
 	override suspend fun f2(request: ANumber): ANumber = aNumber {
-		functionsApplied = request.functionsApplied+1
-		number = request.number + 100
+		lineage = request.withUpdatedLineage(CalcGrpcKt.f2Method)
+		number = request.number + 1000
+	}
+
+	// f3(x) = x + 1000000
+	override suspend fun f3(request: ANumber): ANumber = aNumber {
+		lineage = request.withUpdatedLineage(CalcGrpcKt.f3Method)
+		number = request.number + 1000000
 	}
 }
 

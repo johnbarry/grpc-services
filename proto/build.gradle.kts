@@ -62,3 +62,11 @@ protobuf {
     }
 }
 
+sourceSets {
+    main {
+        java {
+            srcDirs(listOf("grpc","grpckt","java","kotlin")
+                .map {  "build/generated/source/proto/main/$it" })
+        }
+    }
+}

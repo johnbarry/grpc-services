@@ -62,7 +62,7 @@ tasks.withType<KotlinCompile> {
 tasks.withType<Test> {
 	useJUnitPlatform()
 }
-
+/*
 sourceSets {
 	main {
 		java {
@@ -71,7 +71,7 @@ sourceSets {
 		}
 	}
 }
-
+*/
 tasks.register("showSets") {
 	doFirst {
 		sourceSets.main{

@@ -16,16 +16,13 @@ repositories {
 	mavenCentral()
 }
 
-dependencies {
-	implementation(project(":proto"))
-}
-
 tasks.bootBuildImage {
 	imageName = "jpb/testserver"
 }
 
 dependencies {
 
+	implementation(project(":proto"))
 	implementation ("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
@@ -62,14 +59,16 @@ tasks.withType<Test> {
 	useJUnitPlatform()
 }
 
+/*
 sourceSets {
 	main {
 		java {
 			srcDirs(listOf("grpc","grpckt","java","kotlin")
-					.map {  "../proto/build/generated/source/proto/main/$it" })
+				.map {  "../proto/build/generated/source/proto/main/$it" })
 		}
 	}
 }
+*/
 
 tasks.register("showSets") {
 	doFirst {
