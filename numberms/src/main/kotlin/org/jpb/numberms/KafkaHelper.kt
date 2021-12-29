@@ -66,13 +66,15 @@ object KafkaHelper {
         val newFlux = kv.map {
             SenderRecord.create(KafkaConfig.OUT_TOPIC, 0, System.currentTimeMillis(), it.first ?: generateUUID(), it.second.toByteArray(), it.first)
         }
-        KafkaSender.create(SenderOptions.create<KafkaKey, KafkaPayload>(writeProps)).send(newFlux)
+        val ct = KafkaSender.create(SenderOptions.create<KafkaKey, KafkaPayload>(writeProps)).send(newFlux)
             .doOnError {
                 log.error("Kafka send failed: {}", it)
             }
             .doOnComplete{log.info("${KafkaConfig.OUT_TOPIC} WRITE COMPLETE")}
-            .blockLast()
-        log.info("Completed kafka write")
+            .count()
+            .block() ?: 0L
+
+        log.info("******* Completed kafka write: $ct rows written *******")
     }
 
     fun read(readEarliest: Boolean = false): Flux<ConsumerRecord<KafkaKey /* = kotlin.String */, KafkaPayload /* = kotlin.ByteArray */>> =
