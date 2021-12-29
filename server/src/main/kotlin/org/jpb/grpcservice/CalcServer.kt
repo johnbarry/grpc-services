@@ -17,8 +17,8 @@ import java.time.Instant
 
 fun ANumber.withUpdatedLineage(method: MethodDescriptor<ANumber, ANumber>): Lineage =
 	Lineage.newBuilder()
-		.setCorrelationId (this@withUpdatedLineage.lineage.correlationId)
-		.addAllLineage(this@withUpdatedLineage.lineage.lineageList)
+		.setCorrelationId (lineage.correlationId)
+		.addAllLineage(lineage.lineageList)
 		.addLineage (callInstance {
 			service = method.serviceName ?: ""
 			procedure = method.bareMethodName ?: ""
