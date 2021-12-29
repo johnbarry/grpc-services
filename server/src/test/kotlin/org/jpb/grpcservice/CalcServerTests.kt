@@ -23,7 +23,7 @@ class CalcServerTests {
 		localPort shouldNotBe -1
 	}
 	@Test
-	fun check_f1() {
+	fun check_f1_f2_f3() {
 		val channel = ManagedChannelBuilder.forAddress("localhost", 50051).usePlaintext().build()
 		val stub = CalcGrpcKt.CalcCoroutineStub(channel)
 		runBlocking {
