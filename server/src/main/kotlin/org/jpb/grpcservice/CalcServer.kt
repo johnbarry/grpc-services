@@ -15,7 +15,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.stereotype.Component
 import java.time.Instant
 
-fun ANumber.withUpdatedLineage(method: MethodDescriptor<ANumber, ANumber>): Lineage =
+fun ANumber.updatedLineage(method: MethodDescriptor<ANumber, ANumber>): Lineage =
 	Lineage.newBuilder()
 		.setCorrelationId (lineage.correlationId)
 		.addAllLineage(lineage.lineageList)
@@ -30,19 +30,19 @@ open class CalcService : CalcGrpcKt.CalcCoroutineImplBase() {
 
 	// f1(x) = x + 1
 	override suspend fun f1(request: ANumber): ANumber = aNumber {
-		lineage = request.withUpdatedLineage(CalcGrpcKt.f1Method)
+		lineage = request.updatedLineage(CalcGrpcKt.f1Method)
 		number = request.number + 1
 	}
 
 	// f2(x) = x + 1000
 	override suspend fun f2(request: ANumber): ANumber = aNumber {
-		lineage = request.withUpdatedLineage(CalcGrpcKt.f2Method)
+		lineage = request.updatedLineage(CalcGrpcKt.f2Method)
 		number = request.number + 1000
 	}
 
 	// f3(x) = x + 1000000
 	override suspend fun f3(request: ANumber): ANumber = aNumber {
-		lineage = request.withUpdatedLineage(CalcGrpcKt.f3Method)
+		lineage = request.updatedLineage(CalcGrpcKt.f3Method)
 		number = request.number + 1000000
 	}
 }

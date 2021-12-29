@@ -12,17 +12,6 @@ tasks.withType<KotlinCompile> {
     }
 }
 
-//sourceSets {
-//    main {
-//        java {
-//            srcDir ("build/generated/source/proto/main/grpc")
-//            srcDir ("build/generated/source/proto/main/grpckt")
-//            srcDir ("build/generated/source/proto/main/java")
-//        }
-//    }
-//}
-
-
 dependencies {
     api("io.grpc:grpc-protobuf:${rootProject.ext["grpcVersion"]}")
     api("com.google.protobuf:protobuf-java-util:${rootProject.ext["protobufVersion"]}")
@@ -33,9 +22,6 @@ dependencies {
 java {
     sourceCompatibility = JavaVersion.VERSION_11
 }
-
-
-
 
 protobuf {
     protoc {

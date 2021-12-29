@@ -1,39 +1,198 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  creationTimestamp: null
   labels:
-    app: grpc-demo
+    domain: numbers
+    app: demo-grpc-service
     version: "1.0"
-  name: grpc-demo
+    environment: dev
+  name: demo-grpc-service
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
-      app: grpc-demo
-  strategy: {}
+      app: demo-grpc-service
   template:
     metadata:
       creationTimestamp: null
       labels:
-        app: grpc-demo
+        domain: numbers
+        app: demo-grpc-service
         version: "1.0"
     spec:
       containers:
-      - image: jpb/testserver
+      - image: number-demo/gprc-server:v1
         imagePullPolicy: Never
-        name: grpc-demo
-        resources: {}
-status: {}
+        name: demo-grpc-service
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    domain: numbers
+    app: demo-f1
+    version: "1.0"
+    environment: dev
+  name: demo-f1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: demo-f1
+  template:
+    metadata:
+      labels:
+        domain: numbers
+        app: demo-f1
+        version: "1.0"
+        environment: dev
+    spec:
+      containers:
+        - image: number-demo/number-ms:v1
+          imagePullPolicy: Never
+          name: demo-f1
+          volumeMounts:
+            - name: label-vol
+              mountPath: /labels-metadata
+          env:
+            - name: CFG_GRPC_HOST
+              value: demo-grpc-service-rest-grpc
+            - name: CFG_GRPC_PORT
+              value: "50051"
+            - name: CFG_KAFKA_BOOTSTRAP
+              value: "my-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092"
+            - name: CFG_INPUT
+              value: generator
+            - name: CFG_OUTPUT
+              value: f1-output
+            - name: CFG_ENV
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.labels['environment']
+            - name: CFG_DOMAIN
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.labels['domain']
+            - name: CFG_APPLICATION
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.labels['app']
+      volumes:
+      - name: label-vol
+        downwardAPI:
+          items:
+          - path: labels
+            fieldRef:
+              fieldPath: metadata.labels
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    domain: numbers
+    app: demo-f2
+    version: "1.0"
+    environment: dev
+  name: demo-f2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: demo-f2
+  template:
+    metadata:
+      labels:
+        domain: numbers
+        app: demo-f2
+        version: "1.0"
+        environment: dev
+    spec:
+      containers:
+        - image: number-demo/number-ms:v1
+          imagePullPolicy: Never
+          name: demo-f2
+          env:
+            - name: CFG_GRPC_HOST
+              value: demo-grpc-service-rest-grpc
+            - name: CFG_GRPC_PORT
+              value: "50051"
+            - name: CFG_KAFKA_BOOTSTRAP
+              value: "my-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092"
+            - name: CFG_INPUT
+              value: f1-output
+            - name: CFG_OUTPUT
+              value: f2-output
+            - name: CFG_ENV
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.labels['environment']
+            - name: CFG_DOMAIN
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.labels['domain']
+            - name: CFG_APPLICATION
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.labels['app']
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    domain: numbers
+    app: demo-f3
+    version: "1.0"
+    environment: dev
+  name: demo-f3
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: demo-f3
+  template:
+    metadata:
+      labels:
+        domain: numbers
+        app: demo-f3
+        version: "1.0"
+        environment: dev
+    spec:
+      containers:
+        - image: number-demo/number-ms:v1
+          imagePullPolicy: Never
+          name: demo-f3
+          env:
+            - name: CFG_GRPC_HOST
+              value: demo-grpc-service-rest-grpc
+            - name: CFG_GRPC_PORT
+              value: "50051"
+            - name: CFG_KAFKA_BOOTSTRAP
+              value: "my-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092"
+            - name: CFG_INPUT
+              value: f2-output
+            - name: CFG_OUTPUT
+              value: f3-output
+            - name: CFG_ENV
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.labels['environment']
+            - name: CFG_DOMAIN
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.labels['domain']
+            - name: CFG_APPLICATION
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.labels['app']
 ---
 apiVersion: v1
 kind: Service
 metadata:
   creationTimestamp: null
   labels:
-    app: grpc-demo
+    app: demo-grpc-service
     version: "1.0"
-  name: grpc-demo-rest
+  name: demo-grpc-service-rest
 spec:
   ports:
   - name: http
@@ -41,7 +200,7 @@ spec:
     protocol: TCP
     targetPort: 8080
   selector:
-    app: grpc-demo
+    app: demo-grpc-service
   type: ClusterIP
 ---
 apiVersion: v1
@@ -49,9 +208,9 @@ kind: Service
 metadata:
   creationTimestamp: null
   labels:
-    app: grpc-demo
+    app: demo-grpc-service
     version: "1.0"
-  name: grpc-demo-grpc
+  name: demo-grpc-service-rest-grpc
 spec:
   ports:
   - name: grpc
@@ -59,5 +218,5 @@ spec:
     protocol: TCP
     targetPort: 50051
   selector:
-    app: grpc-demo
+    app: demo-grpc-service
   type: ClusterIP

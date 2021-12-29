@@ -1,2 +1,2 @@
-kubectl delete all --all -n jpbtest
+kubectl delete all --all -n number-demo
 

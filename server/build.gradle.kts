@@ -17,7 +17,7 @@ repositories {
 }
 
 tasks.bootBuildImage {
-	imageName = "jpb/testserver"
+	imageName = "number-demo/gprc-server:v1"
 }
 
 dependencies {

@@ -21,8 +21,9 @@ dependencies {
 }
 
 tasks.bootBuildImage {
-	imageName = "jpb/numberms"
+	imageName = "number-demo/number-ms:v1"
 }
+
 
 dependencies {
 	implementation ("org.springframework.boot:spring-boot-starter-actuator")
