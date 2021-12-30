@@ -11,8 +11,6 @@ import org.jpb.grpcservice.proto.ANumber
 import org.jpb.grpcservice.proto.CalcGrpcKt
 import org.jpb.grpcservice.proto.Lineage
 import org.jpb.grpcservice.proto.aNumber
-import org.jpb.numberms.ConfigHelper.getMandatoryConfig
-import org.jpb.numberms.ConfigHelper.getMandatoryIntConfig
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.boot.ApplicationArguments
@@ -22,8 +20,6 @@ import org.springframework.boot.WebApplicationType
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.stereotype.Component
-import kotlin.random.Random
-
 
 @SpringBootApplication
 @EnableAutoConfiguration
@@ -41,14 +37,15 @@ class NumberMS : ApplicationRunner {
         override fun toString(): String = "parse error for key: $key, offset=$offset"
     }
 
-    suspend fun applyFn(num: ANumber, stub: CalcGrpcKt.CalcCoroutineStub): ANumber = when (Random.nextInt(0, 4)) {
-        0 -> stub.f1(num)
-        1 -> stub.f2(num)
-        else -> stub.f3(num)
+    suspend fun applyFn(num: ANumber, stub: CalcGrpcKt.CalcCoroutineStub): ANumber = when (ConfigHelper.function) {
+        "f1" -> stub.f1(num)
+        "f2" -> stub.f2(num)
+        "f3" -> stub.f3(num)
+        else -> throw Exception("Unable to find function named ${ConfigHelper.function} to execute")
     }
 
     fun kafkaInputFlow(): Flow<ANumber> =
-        KafkaHelper.read(readEarliest = false).map {
+        KafkaHelper.read(readEarliest = false, keepListening = true).map {
             try {
                 ANumber.parseFrom(it.value()).toBuilder().build().apply {
                     log.debug("friend command created: offset ${it.offset()}: key ${it.key()}")
@@ -61,7 +58,7 @@ class NumberMS : ApplicationRunner {
         }.asFlow()
 
     fun generatedInputFlow(): Flow<ANumber> =
-        (1..1000)
+        (1..ConfigHelper.generationSize)
             .asFlow()
             .map { aNumber {
                 number = it.toLong()
@@ -70,20 +67,20 @@ class NumberMS : ApplicationRunner {
 
 
     override fun run(args: ApplicationArguments?) {
-        with(if (KafkaHelper.KafkaConfig.IN_TOPIC == "generator") generatedInputFlow() else kafkaInputFlow()) {
+        with(if (ConfigHelper.input == "generator") generatedInputFlow() else kafkaInputFlow()) {
             this.map {
                 Pair(it.lineage.correlationId, applyFn(it, stub) as GeneratedMessageV3)
             }.asFlux().apply {
                 KafkaHelper.write(this)
             }
         }
+        channel.shutdown()
     }
-
 }
 
 fun main(args: Array<String>) {
     NumberMS.log.info("Starting up spring...")
     val app = SpringApplication(NumberMS::class.java)
-    app.webApplicationType = WebApplicationType.REACTIVE
+    app.webApplicationType = WebApplicationType.NONE
     app.run(*args)
 }

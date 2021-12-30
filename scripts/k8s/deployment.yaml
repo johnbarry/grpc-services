@@ -35,7 +35,7 @@ metadata:
     environment: dev
   name: demo-f1
 spec:
-  replicas: 1
+  replicas: 1 # Will keep restarting
   selector:
     matchLabels:
       app: demo-f1
@@ -51,18 +51,21 @@ spec:
         - image: number-demo/number-ms:v1
           imagePullPolicy: Never
           name: demo-f1
-          volumeMounts:
-            - name: label-vol
-              mountPath: /labels-metadata
           env:
             - name: CFG_GRPC_HOST
-              value: demo-grpc-service-rest-grpc
+              value: demo-grpc-service-grpc
             - name: CFG_GRPC_PORT
               value: "50051"
             - name: CFG_KAFKA_BOOTSTRAP
-              value: "my-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092"
+              value: "my-cluster-kafka-plain-bootstrap.kafka.svc.cluster.local:9092"
+            - name: CFG_FUNCTION
+              value: f1
             - name: CFG_INPUT
               value: generator
+            - name: CFG_INPUT
+              value: generator
+            - name: CFG_GENERATION_SIZE
+              value: "20000"
             - name: CFG_OUTPUT
               value: f1-output
             - name: CFG_ENV
@@ -77,13 +80,6 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.labels['app']
-      volumes:
-      - name: label-vol
-        downwardAPI:
-          items:
-          - path: labels
-            fieldRef:
-              fieldPath: metadata.labels
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -113,11 +109,13 @@ spec:
           name: demo-f2
           env:
             - name: CFG_GRPC_HOST
-              value: demo-grpc-service-rest-grpc
+              value: demo-grpc-service-grpc
             - name: CFG_GRPC_PORT
               value: "50051"
             - name: CFG_KAFKA_BOOTSTRAP
-              value: "my-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092"
+              value: "my-cluster-kafka-plain-bootstrap.kafka.svc.cluster.local:9092"
+            - name: CFG_FUNCTION
+              value: f2
             - name: CFG_INPUT
               value: f1-output
             - name: CFG_OUTPUT
@@ -163,11 +161,13 @@ spec:
           name: demo-f3
           env:
             - name: CFG_GRPC_HOST
-              value: demo-grpc-service-rest-grpc
+              value: demo-grpc-service-grpc
             - name: CFG_GRPC_PORT
               value: "50051"
             - name: CFG_KAFKA_BOOTSTRAP
-              value: "my-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092"
+              value: "my-cluster-kafka-plain-bootstrap.kafka.svc.cluster.local:9092"
+            - name: CFG_FUNCTION
+              value: f3
             - name: CFG_INPUT
               value: f2-output
             - name: CFG_OUTPUT
@@ -210,7 +210,7 @@ metadata:
   labels:
     app: demo-grpc-service
     version: "1.0"
-  name: demo-grpc-service-rest-grpc
+  name: demo-grpc-service-grpc
 spec:
   ports:
   - name: grpc
