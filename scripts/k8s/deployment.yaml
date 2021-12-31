@@ -35,7 +35,7 @@ metadata:
     environment: dev
   name: demo-f1
 spec:
-  replicas: 1 # Will keep restarting
+  replicas: 0 # Will keep restarting
   selector:
     matchLabels:
       app: demo-f1
@@ -62,10 +62,8 @@ spec:
               value: f1
             - name: CFG_INPUT
               value: generator
-            - name: CFG_INPUT
-              value: generator
             - name: CFG_GENERATION_SIZE
-              value: "20000"
+              value: "5000"
             - name: CFG_OUTPUT
               value: f1-output
             - name: CFG_ENV
@@ -91,7 +89,7 @@ metadata:
     environment: dev
   name: demo-f2
 spec:
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
       app: demo-f2
@@ -143,7 +141,7 @@ metadata:
     environment: dev
   name: demo-f3
 spec:
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
       app: demo-f3
@@ -172,6 +170,62 @@ spec:
               value: f2-output
             - name: CFG_OUTPUT
               value: f3-output
+            - name: CFG_ENV
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.labels['environment']
+            - name: CFG_DOMAIN
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.labels['domain']
+            - name: CFG_APPLICATION
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.labels['app']
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    domain: numbers
+    app: stream-test
+    version: "1.0"
+    environment: dev
+  name: stream-test
+spec:
+  replicas: 0 # Will keep restarting
+  selector:
+    matchLabels:
+      app: stream-test
+  template:
+    metadata:
+      labels:
+        domain: numbers
+        app: stream-test
+        version: "1.0"
+        environment: dev
+    spec:
+      containers:
+        - image: number-demo/number-ms:v1
+          imagePullPolicy: Never
+          name: stream-test
+          env:
+            - name: CFG_GRPC_HOST
+              value: demo-grpc-service-grpc
+            - name: CFG_GRPC_PORT
+              value: "50051"
+            - name: CFG_KAFKA_BOOTSTRAP
+              value: "my-cluster-kafka-plain-bootstrap.kafka.svc.cluster.local:9092"
+            - name: CFG_FUNCTION
+              value: f1
+            - name: CFG_INPUT
+              value: generator
+            - name: CFG_GENERATION_SIZE
+              value: "10000"
+            - name: CFG_OUTPUT
+              value: f1-output
+            - name: CFG_TIME_STREAMING
+              value: "Y"
             - name: CFG_ENV
               valueFrom:
                 fieldRef:

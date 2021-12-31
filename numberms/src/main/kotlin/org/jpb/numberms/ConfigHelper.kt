@@ -17,4 +17,5 @@ object ConfigHelper {
     val gRPCHost = getMandatoryConfig("CFG_GRPC_HOST")
     val gRPCPort = getMandatoryIntConfig("CFG_GRPC_PORT")
     val generationSize = getOptionalIntConfig("CFG_GENERATION_SIZE", 1000)
+    val timeStreaming = getOptionalConfig("CFG_TIME_STREAMING","N").uppercase().startsWith("Y")
 }

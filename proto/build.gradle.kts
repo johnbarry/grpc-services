@@ -17,6 +17,8 @@ dependencies {
     api("com.google.protobuf:protobuf-java-util:${rootProject.ext["protobufVersion"]}")
     api("com.google.protobuf:protobuf-kotlin:${rootProject.ext["protobufVersion"]}")
     api("io.grpc:grpc-kotlin-stub:${rootProject.ext["grpcKotlinVersion"]}")
+    api("org.jetbrains.kotlinx:kotlinx-coroutines-core:${rootProject.ext["kotlinVersion"]}")
+
 
 }
 java {
@@ -36,14 +38,30 @@ protobuf {
         }
     }
     generateProtoTasks {
-        all().forEach {
-            it.plugins {
+        all().forEach { task ->
+            task.plugins {
                 id("grpc")
                 id("grpckt")
             }
-            it.builtins {
+            task.builtins {
                 id("kotlin")
             }
+            // If true, will generate a descriptor_set.desc file under
+            // $generatedFilesBaseDir/$sourceSet. Default is false.
+            // See --descriptor_set_out in protoc documentation about what it is.
+            task.generateDescriptorSet = true
+
+            // Allows to override the default for the descriptor set location
+            task.descriptorSetOptions.path =
+                "${projectDir}/build/descriptors/${task.sourceSet.name}.dsc"
+
+            // If true, the descriptor set will contain line number information
+            // and comments. Default is false.
+            task.descriptorSetOptions.includeSourceInfo = true
+
+            // If true, the descriptor set will contain all transitive imports and
+            // is therefore self-contained. Default is false.
+            task.descriptorSetOptions.includeImports = true
         }
     }
 }

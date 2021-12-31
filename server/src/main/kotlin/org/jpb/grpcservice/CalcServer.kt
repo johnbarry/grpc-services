@@ -5,6 +5,8 @@ import com.google.protobuf.timestamp
 import io.grpc.MethodDescriptor
 import io.grpc.Server
 import io.grpc.ServerBuilder
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import org.jpb.grpcservice.proto.*
 
 import org.slf4j.Logger
@@ -33,6 +35,10 @@ open class CalcService : CalcGrpcKt.CalcCoroutineImplBase() {
 		lineage = request.updatedLineage(CalcGrpcKt.f1Method)
 		number = request.number + 1
 	}
+
+	override fun streamF1(requests: Flow<ANumber>): Flow<ANumber> =
+		requests.map { f1(it) }
+
 
 	// f2(x) = x + 1000
 	override suspend fun f2(request: ANumber): ANumber = aNumber {

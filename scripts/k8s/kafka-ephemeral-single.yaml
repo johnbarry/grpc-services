@@ -1,0 +1,72 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: Kafka
+metadata:
+  name: my-cluster
+spec:
+  kafka:
+    version: 3.0.0
+    replicas: 1
+    template:
+      statefulset:
+        metadata:
+          labels:
+            app: my-cluster
+            version: 1.0
+      pod:
+        metadata:
+          labels:
+            app: my-cluster
+            version: 1.0
+          annotations:
+            sidecar.istio.io/inject: "true"
+    listeners:
+      - name: plain
+        port: 9092
+        type: nodeport
+        tls: false
+      - name: tls
+        port: 9093
+        type: nodeport
+        tls: true
+    config:
+      offsets.topic.replication.factor: 1
+      transaction.state.log.replication.factor: 1
+      transaction.state.log.min.isr: 1
+      default.replication.factor: 1
+      min.insync.replicas: 1
+      inter.broker.protocol.version: "3.0"
+    storage:
+      type: ephemeral
+  zookeeper:
+    replicas: 3
+    storage:
+      type: ephemeral
+    template:
+      statefulset:
+        metadata:
+          labels:
+            app: my-cluster
+            version: 1.0
+      pod:
+        metadata:
+          labels:
+            app: my-cluster
+            version: 1.0
+          annotations:
+            sidecar.istio.io/inject: "true"
+  entityOperator:
+    topicOperator: {}
+    userOperator: {}
+    template:
+      deployment:
+        metadata:
+          labels:
+            app: my-cluster
+            version: 1.0
+      pod:
+        metadata:
+          labels:
+            app: my-cluster
+            version: 1.0
+          annotations:
+            sidecar.istio.io/inject: "true"

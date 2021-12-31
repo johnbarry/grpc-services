@@ -33,7 +33,7 @@ dependencies {
 	testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
 	testImplementation("org.junit.jupiter:junit-jupiter-engine:5.8.1")
 	testImplementation("io.kotest:kotest-assertions-core:5.0.0")
-	testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.2")
+	//testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.2")
 	runtimeOnly("io.grpc:grpc-netty:${rootProject.ext["grpcVersion"]}")
 
 	api("io.grpc:grpc-protobuf:${rootProject.ext["grpcVersion"]}")

@@ -9,6 +9,7 @@ package grpcservice;
 
 service Calc {
   rpc f1 (ANumber) returns (ANumber) {}
+  rpc streamF1 (stream ANumber) returns (stream ANumber) {}
   rpc f2 (ANumber) returns (ANumber) {}
   rpc f3 (ANumber) returns (ANumber) {}
 }
