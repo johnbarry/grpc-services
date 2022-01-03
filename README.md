@@ -187,4 +187,4 @@ This checks the speed of gRPC unary vs streaming APIs and does not use Kafka.
 
 Use `minikube dashboard` to start the dashboard.  Choose the _number-demo_ namespace in top left handside of dashboard:
 
-(k8s_dash.png)
+![Dashboard](k8s_dash.png)
