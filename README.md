@@ -110,7 +110,6 @@ kubectl delete all --all -n kafka
 
 ``` bash
 ~/git/grpc-services/scripts/istio$ minikube dashboard
-
 * Verifying dashboard health ...
 * Launching proxy ...
 * Verifying proxy health ...
@@ -178,4 +177,14 @@ kubectl delete all --all -n number-demo
 
 ## Run services
 
-The gRPC service _demo-grpc-service_ will be started during install as 1 replica
+The gRPC service _demo-grpc-service_ will be started during install as 1 replica is defined [in the deployment script](https://github.com/johnbarry/grpc-services/blob/44aa59c380de5480aa4834b3801f86c4a790fd96/scripts/k8s/deployment.yaml#L11).
+
+### gRPC demo
+
+This checks the speed of gRPC unary vs streaming APIs and does not use Kafka.  
+
+#### Start from Kubernetes console
+
+Use `minikube dashboard` to start the dashboard.  Choose the _number-demo_ namespace in top left handside of dashboard:
+
+(k8s_dash.png)
