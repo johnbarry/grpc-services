@@ -1,3 +1,11 @@
+# Istio gRPC/REST mesh
+
+Shows how to deploy an Istio mesh onto Ubuntu, run a gRPC service and write some a synchronous micro-services that take Kafka stream inputs and write the result of the micro-service calls to Kafka for the next one.
+
+Using the mesh, the state and performance of the components can be monitored.
+
+Istio uses a Envoy sidecar proxy to send all the data and controls packets thru the mesh on the k8s containers. Envoy has a gRPC transcode which will take a REST call as input, convert to a gRPC call and take the gRPC results and convert to REST result.  Wasn't able to get this working just yet.
+
 # Getting started
 
 ## Installing Istio
@@ -215,6 +223,8 @@ From the Kiali dashboard, you can see each gRPC (or REST) call is measured and l
 
 ![metrics](images/grpc-metrics.png)
 http://localhost:20001/kiali/console/namespaces/number-demo/workloads/demo-grpc-service?tab=in_metrics&rangeDuration=1800
+
+See the logs where each gRPC call (in a REST like notation) is shown which underpin the metrics.
 
 ``` stop the stream tests
  kubectl scale -n number-demo deployment stream-test --replicas=0
