@@ -95,8 +95,8 @@ class NumberMS : ApplicationRunner {
     override fun run(args: ApplicationArguments?) {
         runBlocking {
             if (ConfigHelper.timeStreaming) {
-                repeat (5) {
-                    runFlow(writeToKafka = false, useStreaming = false)
+                runFlow(writeToKafka = false, useStreaming = false)
+                repeat (5) { // streaming speeds up when repeated on minikube - why?  non-streaming doesn't
                     runFlow(writeToKafka = false, useStreaming = true)
                 }
             } else

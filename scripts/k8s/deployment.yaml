@@ -221,7 +221,7 @@ spec:
             - name: CFG_INPUT
               value: generator
             - name: CFG_GENERATION_SIZE
-              value: "10000"
+              value: "100000"
             - name: CFG_OUTPUT
               value: f1-output
             - name: CFG_TIME_STREAMING

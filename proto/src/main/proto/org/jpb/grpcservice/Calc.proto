@@ -7,11 +7,25 @@ option java_outer_classname = "CalcProto";
 
 package grpcservice;
 
+import "google/api/annotations.proto";
+
 service Calc {
-  rpc f1 (ANumber) returns (ANumber) {}
+  rpc f1 (ANumber) returns (ANumber) {
+    option (google.api.http) = {
+      get: "/f1"
+    };
+  }
   rpc streamF1 (stream ANumber) returns (stream ANumber) {}
-  rpc f2 (ANumber) returns (ANumber) {}
-  rpc f3 (ANumber) returns (ANumber) {}
+  rpc f2 (ANumber) returns (ANumber) {
+    option (google.api.http) = {
+      get: "/f2"
+    };
+  }
+  rpc f3 (ANumber) returns (ANumber) {
+    option (google.api.http) = {
+      get: "/f3"
+    };
+  }
 }
 
 message CallInstance {

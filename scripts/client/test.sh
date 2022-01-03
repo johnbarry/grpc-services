@@ -22,16 +22,31 @@ echo "-----------------"
 #done
 
 cd "${GITDIR}"/grpc-services/scripts/client
-echo "sending POST to "   "http://$GRPC_HOST:50051/grpcservice.Calc/f1/"
-curl -v -X POST \
-    "http://$GRPC_HOST:50051/grpcservice.Calc/f1/" \
-    -H 'Content-Type: application/json' \
-    -d '[{
+echo "------------------------"
+echo "------------------------"
+date +"%M:%S:%N"
+echo "sending POST to "   "http://$GRPC_HOST:50051/grpcservice.Calc/f1"
+curl --http2 --raw -v -X POST \
+    "http://$GRPC_HOST:50051/grpcservice.Calc/f1" \
+    -H 'content-type: application/json' \
+    -d '{
     "number": "200",
     "lineage": {
        "correlationId": "abc"
-    }]
+    }
 }'
-
+date +"%M:%S:%N"
+exit 0
+echo "------------------------"
+echo "------------------------"
 echo "sending GET to "   "http://$GRPC_HOST:50051/grpcservice.Calc/f1/"
-curl -v  -H 'Content-Type: application/json'  "http://$GRPC_HOST:50051/grpcservice.Calc/f1/number=200"
+echp curl -v  -H 'Content-Type: application/grpc'  "http://$GRPC_HOST:50051/grpcservice.Calc/f1/number=200"
+curl -v --raw -H 'Content-Type: application/grpc'  "http://$GRPC_HOST:50051/grpcservice.Calc/f1/number=200"
+
+echo "------------------------"
+echo curl -v  -H 'Content-Type: application/grpc'  "http://$GRPC_HOST:50051/Calc/f1/number=200"
+curl -v  -H 'Content-Type: application/grpc'  "http://$GRPC_HOST:50051/Calc/f1/number=200"
+
+echo "------------------------"
+echo curl -v  -H 'Content-Type: application/grpc'  "http://$GRPC_HOST:50051/f1/number=200"
+curl -v  -H 'Content-Type: application/grpc'  "http://$GRPC_HOST:50051/f1/number=200"

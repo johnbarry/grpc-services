@@ -1,4 +1,4 @@
-kubectl delete EnvoyFilter demo-grpc-service-transcoder
+kubectl delete EnvoyFilter demo-grpc-service-transcoder -n number-demo
 
 echo -n 'apiVersion: networking.istio.io/v1alpha3
 kind: EnvoyFilter
