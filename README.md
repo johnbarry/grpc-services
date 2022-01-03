@@ -205,7 +205,6 @@ Choose Workloads then filter on _number-demo_ namespace. Click _demo-grpc-servic
 
 Should show metrics for gRPC calls: `http://localhost:20001/kiali/console/namespaces/number-demo/workloads/demo-grpc-service?duration=60&refresh=15000`
 
-
 #### Check results
 
 Choose Pods on LHS menu and click the menu icon on RHS of the stream-test line and choose _Logs_
@@ -217,3 +216,26 @@ From the Kiali dashboard, you can see each gRPC (or REST) call is measured and l
 ![metrics](images/grpc-metrics.png)
 http://localhost:20001/kiali/console/namespaces/number-demo/workloads/demo-grpc-service?tab=in_metrics&rangeDuration=1800
 
+``` stop the stream tests
+ kubectl scale -n number-demo deployment stream-test --replicas=0
+```
+
+
+### First Kafka micro-service
+
+_demo-f1_ takes a sequence of generated numbers, runs them thru the gRPC service unary call to update the numbers and send results to Kafka.
+
+``` start the micro-service
+ kubectl scale -n number-demo deployment demo-f1 --replicas=1
+ ```
+ 
+ Then go to Pods menu option in k8s dashboard and check the logs for the newly spawned pod:
+ 
+ ![f1 demo out](images/demo-f1-out.png)
+ 
+``` stop the micro-service
+kubectl scale -n number-demo deployment demo-f1 --replicas=0
+```
+ 
+ 
+ 
