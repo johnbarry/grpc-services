@@ -6,9 +6,9 @@ Using the mesh, the state and performance of the components can be monitored.
 
 Istio uses a Envoy sidecar proxy to send all the data and controls packets thru the mesh on the k8s containers. Envoy has a gRPC transcode which will take a REST call as input, convert to a gRPC call and take the gRPC results and convert to REST result.  Wasn't able to get this working just yet.
 
-- Protobuf defines the gRPC calls: https://github.com/johnbarry/grpc-services/blob/main/proto/src/main/proto/org/jpb/grpcservice/Calc.proto
-- gRPC server: https://github.com/johnbarry/grpc-services/tree/main/server
-- Micro-services that call the gRPC server (using regular gRPC stub client), reading/writing results to Kafka: https://github.com/johnbarry/grpc-services/tree/main/numberms/src/main/kotlin/org/jpb/numberms
+- [Protobuf defines the gRPC calls](https://github.com/johnbarry/grpc-services/blob/main/proto/src/main/proto/org/jpb/grpcservice/Calc.proto)
+- [gRPC server](https://github.com/johnbarry/grpc-services/tree/main/server)
+- [Micro-services](https://github.com/johnbarry/grpc-services/tree/main/numberms/src/main/kotlin/org/jpb/numberms) that call the gRPC server (using regular gRPC stub client), reading/writing results to Kafka
 
 
 # Getting started
