@@ -12,6 +12,9 @@ Istio uses a Envoy sidecar proxy to send all the data and controls packets thru 
 
 
 # Getting started
+<details>
+  <summary>Installing Istio...</summary>
+  
 
 ## Installing Istio
 
@@ -116,8 +119,13 @@ If you need to re-install you can drop all the Kafka stuff in one call as it is 
 ``` bash
 kubectl delete all --all -n kafka
 ```
+</details>
 
 # Running Istio/Kubernetes
+  
+<details>
+<summary>Start Kubernetes dashboard...</summary>
+
 
 ## Start Kubernetes dashboard
 
@@ -130,7 +138,12 @@ kubectl delete all --all -n kafka
 
 ```
 
+</details>
+  
 # Install and run our services
+  
+<details>
+  <summary>Install (inc build)...</summary>
 
 ## Install (inc build)
 
@@ -251,6 +264,8 @@ _demo-f1_ takes a sequence of generated numbers, runs them thru the gRPC service
 ``` stop the micro-service
 kubectl scale -n number-demo deployment demo-f1 --replicas=0
 ```
+
+</details>
  
  
  
