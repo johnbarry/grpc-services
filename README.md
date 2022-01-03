@@ -195,6 +195,19 @@ Scale up_ stream test_ by choosing Deployments on LHS menu and scaling to 1.
 
 ![Scale2](images/stream-test-scale-1.png)
 
+#### Start Istio dashboard
+
+``` bash
+istioctl dashboard kiali 
+```
+
+Choose Workloads then filter on _number-demo_ namespace. Click _demo-grpc-service_.
+
+Should show metrics for gRPC calls: `http://localhost:20001/kiali/console/namespaces/number-demo/workloads/demo-grpc-service?duration=60&refresh=15000`
+
+
+
+
 #### Check results
 
 Choose Pods on LHS menu and click the menu icon on RHS of the stream-test line and choose _Logs_
