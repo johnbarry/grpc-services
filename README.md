@@ -38,6 +38,10 @@ sudo groupadd docker
 sudo usermod -aG docker $USER
 docker run hello-world
 ```
+### Download and install Istio
+
+Follow instructions here: https://istio.io/latest/docs/setup/getting-started/
+  
 ## Start Istio
 
 ``` bash
