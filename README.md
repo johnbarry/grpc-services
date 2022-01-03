@@ -191,7 +191,12 @@ Use `minikube dashboard` to start the dashboard.  Choose the _number-demo_ names
 
 Scale up_ stream test_ by choosing Deployments on LHS menu and scaling to 1.
 
-![Scale](images/scale-stream-test.png)
+![Scale1](images/scale-stream-test.png)
 
-![Scale](images/![Scale](images/scale-stream-test.png)
+![Scale2](images/stream-test-scale-1.png)
 
+#### Check results
+
+Choose Pods on LHS menu and click the menu icon on RHS of the stream-test line and choose _Logs_
+
+![performace](images/Performance.png)
