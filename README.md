@@ -179,7 +179,7 @@ kubectl delete all --all -n number-demo
 
 The gRPC service _demo-grpc-service_ will be started during install as 1 replica is defined [in the deployment script](https://github.com/johnbarry/grpc-services/blob/44aa59c380de5480aa4834b3801f86c4a790fd96/scripts/k8s/deployment.yaml#L11).
 
-### gRPC demo
+### gRPC stream demo
 
 This checks the speed of gRPC unary vs streaming APIs and does not use Kafka.  
 
@@ -187,4 +187,11 @@ This checks the speed of gRPC unary vs streaming APIs and does not use Kafka.
 
 Use `minikube dashboard` to start the dashboard.  Choose the _number-demo_ namespace in top left handside of dashboard:
 
-![Dashboard](k8s_dash.png)
+![Dashboard](images/k8s_dash.png)
+
+Scale up_ stream test_ by choosing Deployments on LHS menu and scaling to 1.
+
+![Scale](images/scale-stream-test.png)
+
+![Scale](images/![Scale](images/scale-stream-test.png)
+
