@@ -206,10 +206,14 @@ Choose Workloads then filter on _number-demo_ namespace. Click _demo-grpc-servic
 Should show metrics for gRPC calls: `http://localhost:20001/kiali/console/namespaces/number-demo/workloads/demo-grpc-service?duration=60&refresh=15000`
 
 
-
-
 #### Check results
 
 Choose Pods on LHS menu and click the menu icon on RHS of the stream-test line and choose _Logs_
 
 ![performace](images/Performance.png)
+
+From the Kiali dashboard, you can see each gRPC (or REST) call is measured and logged:
+
+![metrics](images/grpc-metrics.png)
+http://localhost:20001/kiali/console/namespaces/number-demo/workloads/demo-grpc-service?tab=in_metrics&rangeDuration=1800
+
