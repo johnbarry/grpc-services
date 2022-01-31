@@ -1,16 +1,14 @@
 package org.jpb.grpcservice
 
 
-import com.google.protobuf.GeneratedMessageV3
+
 import com.google.protobuf.timestamp
-import com.google.protobuf.util.JsonFormat
 import io.grpc.MethodDescriptor
 import io.grpc.Server
 import io.grpc.ServerBuilder
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import org.jpb.grpcservice.proto.*
-
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.boot.*
