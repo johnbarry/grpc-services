@@ -44,3 +44,7 @@ message ANumber {
   Lineage lineage = 2;
 }
 
+message Employee {
+  uint64 id = 1;
+  string name = 2;
+}

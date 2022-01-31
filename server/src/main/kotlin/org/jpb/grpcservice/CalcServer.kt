@@ -1,7 +1,9 @@
 package org.jpb.grpcservice
 
 
+import com.google.protobuf.GeneratedMessageV3
 import com.google.protobuf.timestamp
+import com.google.protobuf.util.JsonFormat
 import io.grpc.MethodDescriptor
 import io.grpc.Server
 import io.grpc.ServerBuilder
@@ -75,14 +77,21 @@ class CalcServer : ApplicationRunner {
 		)
 	}
 
+
 	companion object {
 		val log: Logger = LoggerFactory.getLogger(CalcServer::class.java)
+
 	}
 
 	override fun run(args: ApplicationArguments?) {
 		log.info("Starting grpc Server")
 		val server = CalcServer()
 		server.start()
+
+		TestDatabase.testQuery().subscribe {
+			val emp = it!!
+			log.info("Got employee from database: $emp")
+		}
 	}
 }
 

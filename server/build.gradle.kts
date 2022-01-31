@@ -23,6 +23,11 @@ tasks.bootBuildImage {
 dependencies {
 
 	implementation(project(":proto"))
+	implementation ("org.springframework.boot:spring-boot-starter-data-r2dbc")
+
+	// https://github.com/oracle/oracle-r2dbc: "Use the 0.1.0 version of Oracle R2DBC if you are programming with Spring"
+	implementation ("com.oracle.database.r2dbc:oracle-r2dbc:0.1.0")
+	implementation ("org.springframework.boot:spring-boot-starter-data-r2dbc")
 	implementation ("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
